@@ -5,12 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.spring_mvc1.model.Item;
@@ -29,7 +27,7 @@ public class ItemController {
 	}
 	
 	@GetMapping("{id}")
-	public String show(@PathVariable("id") Long id, Model model) {
+	public String show(@PathVariable Long id, Model model) {
 		model.addAttribute("item", itemService.findOne(id));
 		return "show";
 	}
@@ -40,10 +38,10 @@ public class ItemController {
 	}
 	
 	@GetMapping("{id}/edit")
-	public String edit(@PathVariable("id") Long id, @ModelAttribute("item") Item item, Model model) {
-		model.addAttribute("item", itemService.findOne(id));
-		return "edit";
-	}
+  public String edit(@PathVariable Long id, @ModelAttribute("item") Item item, Model model) {
+    model.addAttribute("item", itemService.findOne(id));
+    return "edit";
+  }
 	
 	@PostMapping
 	public String create(@ModelAttribute("item") @Validated Item item, BindingResult result, Model model) {
@@ -55,7 +53,7 @@ public class ItemController {
 		}
 	}
 	
-	@PutMapping("{id}")
+	@PostMapping("{id}/update")
 	public String edit(@PathVariable Long id, @ModelAttribute("item") @Validated Item item, BindingResult result, Model model) {
 		if(result.hasErrors()) {
 			model.addAttribute("item", item);
@@ -67,7 +65,7 @@ public class ItemController {
 		}
 	}
 	
-	@DeleteMapping("{id}")
+	@GetMapping("{id}/delete")
 	public String delete(@PathVariable Long id) {
 		itemService.delete(id);
 		return "redirect:/items";
